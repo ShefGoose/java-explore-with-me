@@ -3,11 +3,17 @@ package ru.practicum.ewm.statsclient;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import ru.practicum.ewm.statsclient.advice.exception.StatsServiceException;
 import ru.practicum.ewm.statsdto.HitDto;
 import ru.practicum.ewm.statsdto.StatsDto;
 
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -22,12 +28,21 @@ public class StatsClientRestTemplate implements StatsClient {
 
     @Override
     public HitDto hit(HitDto hitDto) {
-        String url = baseUrl + "/hit";
+        URI uri = URI.create(baseUrl + "/hit");
 
-        ResponseEntity<HitDto> response =
-        rest.postForEntity(url, hitDto, HitDto.class);
+        try {
+            ResponseEntity<HitDto> response =
+                    rest.postForEntity(uri, hitDto, HitDto.class);
+            return requireBody(response.getBody(),
+                    "stats-service вернул пустой ответ для POST " + uri);
 
-        return response.getBody();
+        } catch (ResourceAccessException netEx) {
+            throw new StatsServiceException(
+                    "Не удалось подключиться к stats-service: " + uri, netEx);
+        } catch (RestClientException restEx) {
+            throw new StatsServiceException(
+                    "Ошибка вызова stats-service POST " + uri, restEx);
+        }
     }
 
     @Override
@@ -46,19 +61,34 @@ public class StatsClientRestTemplate implements StatsClient {
             uris.forEach(u -> builder.queryParam("uris", u));
         }
 
-        ResponseEntity<StatsDto[]> resp = rest.exchange(
-                builder.encode().build().toUri(),
-                HttpMethod.GET,
-                null,
-                StatsDto[].class);
+        URI uri = builder.encode(StandardCharsets.UTF_8).build().toUri();
 
+        try {
+            ResponseEntity<StatsDto[]> resp = rest.exchange(
+                    uri,
+                    HttpMethod.GET,
+                    null,
+                    StatsDto[].class);
 
-        StatsDto[] body = resp.getBody();
+            StatsDto[] body = resp.getBody();
 
-        if (body == null || body.length == 0) {
-            return List.of();
+            if (body == null || body.length == 0) {
+                return List.of();
+            }
+            return List.of(body);
+        } catch (ResourceAccessException netEx) {
+            throw new StatsServiceException(
+                    "Не удалось подключиться к stats-service: " + uri, netEx);
+        } catch (RestClientException restEx) {
+            throw new StatsServiceException(
+                    "Ошибка вызова stats-service GET " + uri, restEx);
         }
+    }
 
-        return List.of(body);
+    private static <T> T requireBody(@Nullable T body, String message) {
+        if (body == null) {
+            throw new StatsServiceException(message);
+        }
+        return body;
     }
 }

@@ -3,7 +3,6 @@ package ru.practicum.ewm.statsdto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +22,6 @@ public class HitDto {
     private String uri;
     @NotBlank(message = "ip-адрес пользователя не может быть пустым")
     private String ip;
-    @NotNull(message = "Дата запроса к эндпоинту не может быть null")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime created;
 }
