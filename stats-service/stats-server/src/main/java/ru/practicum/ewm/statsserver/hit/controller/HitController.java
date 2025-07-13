@@ -3,6 +3,7 @@ package ru.practicum.ewm.statsserver.hit.controller;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.statsdto.HitDto;
 import ru.practicum.ewm.statsdto.StatsDto;
@@ -18,6 +19,7 @@ public class HitController {
     private final HitService hitService;
 
     @PostMapping("/hit")
+    @ResponseStatus(HttpStatus.CREATED)
     public HitDto create(@RequestBody @Valid HitDto hitDto) {
         return hitService.create(hitDto);
     }
