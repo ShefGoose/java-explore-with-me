@@ -18,7 +18,6 @@ public class CategoryControllerPublic {
     private final CategoryService categoryService;
 
     @GetMapping
-    @Validated
     public Collection<CategoryDto> findAll(@PositiveOrZero @RequestParam(name = "from", required = false,
                                                        defaultValue = "0") Integer from,
                                            @Positive @RequestParam(name = "size", required = false,

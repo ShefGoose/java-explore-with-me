@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import ru.practicum.ewm.mainservice.advice.exception.DuplicationNameCatException;
@@ -33,8 +34,8 @@ public class CategoryServiceTest {
 
     @Test
     void createDuplicateCategoryException() {
-
-        when(categoryRepository.existsByNameIgnoreCase("Music")).thenReturn(true);
+        when(categoryRepository.saveAndFlush(any(Category.class)))
+                .thenThrow(new DataIntegrityViolationException("Категория с таким именем уже существует"));
 
         CategoryDto dto = new CategoryDto(null, "Music");
 
@@ -45,7 +46,8 @@ public class CategoryServiceTest {
     @Test
     void updateDuplicateNameThrowsConflict() {
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(new Category(1L, "Old")));
-        when(categoryRepository.existsByNameIgnoreCase("New")).thenReturn(true);
+        when(categoryRepository.saveAndFlush(any(Category.class)))
+                .thenThrow(new DataIntegrityViolationException("Категория с таким именем уже существует"));
 
         assertThrows(DuplicationNameCatException.class,
                 () -> categoryService.update(new CategoryDto(null, "New"), 1L));

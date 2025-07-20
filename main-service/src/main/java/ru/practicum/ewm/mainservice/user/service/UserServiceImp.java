@@ -1,6 +1,7 @@
 package ru.practicum.ewm.mainservice.user.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,10 +25,12 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDto create(UserDto userDto) {
-        if (userRepository.existsByEmail(userDto.getEmail())) {
+        try {
+            User user = userRepository.saveAndFlush(UserMapper.toUser(userDto));
+            return UserMapper.toUserDto(user);
+        } catch (DataIntegrityViolationException e) {
             throw new DuplicateEmailException("Email уже используется");
         }
-        return UserMapper.toUserDto(userRepository.save(UserMapper.toUser(userDto)));
     }
 
     @Override

@@ -15,6 +15,7 @@ import ru.practicum.ewm.mainservice.advice.enums.EventState;
 import ru.practicum.ewm.mainservice.category.model.Category;
 import ru.practicum.ewm.mainservice.category.repository.CategoryRepository;
 import ru.practicum.ewm.mainservice.event.dto.EventShortDto;
+import ru.practicum.ewm.mainservice.event.dto.PublicEventFilter;
 import ru.practicum.ewm.mainservice.event.mapper.EventPatchMapper;
 import ru.practicum.ewm.mainservice.event.model.Event;
 import ru.practicum.ewm.mainservice.event.model.Location;
@@ -57,22 +58,14 @@ public class EventServiceTest {
 
     @Test
     void findAllByPublicUserStartAfterEndThrowsValidationException() {
-
-        String rangeStart = "2025-12-31 00:00:00";
-        String rangeEnd = "2025-01-01 00:00:00";
+        PublicEventFilter f = new PublicEventFilter();
+        f.setRangeStart(LocalDateTime.of(2025, 12, 31, 0, 0));
+        f.setRangeEnd(LocalDateTime.of(2025,  1,  1, 0, 0));
 
         assertThrows(
                 ValidationException.class,
                 () -> eventService.findAllByPublicUser(
-                        null,
-                        List.of(),
-                        null,
-                        rangeStart,
-                        rangeEnd,
-                        null,
-                        EventSort.EVENT_DATE,
-                        0, 10,
-                        "127.0.0.1", "/events"));
+                        f, "127.0.0.1", "/events"));
     }
 
     @Test
@@ -102,19 +95,18 @@ public class EventServiceTest {
         when(statsService.buildViewsMapForPublished(anyCollection()))
                 .thenReturn(Collections.emptyMap());
 
+        PublicEventFilter f = new PublicEventFilter();
+        f.setOnlyAvailable(true);
+        f.setSort(EventSort.EVENT_DATE);
+        f.setFrom(0);
+        f.setSize(10);
+
         Collection<EventShortDto> result = eventService.findAllByPublicUser(
-                null,
-                null, null,
-                null, null,
-                true,
-                EventSort.EVENT_DATE,
-                0, 10,
-                "127.0.0.1", "/events");
+                f, "127.0.0.1", "/events");
 
         assertEquals(1, result.size());
         assertEquals(2L, result.iterator().next().getId());
 
         verify(statsService).addHit("/events", "127.0.0.1");
     }
-
 }

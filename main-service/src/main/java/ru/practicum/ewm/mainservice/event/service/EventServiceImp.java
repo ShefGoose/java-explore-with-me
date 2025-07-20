@@ -33,7 +33,6 @@ import ru.practicum.ewm.mainservice.user.model.User;
 import ru.practicum.ewm.mainservice.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -46,8 +45,6 @@ public class EventServiceImp implements EventService {
     private final RequestRepository requestRepository;
     private final EventPatchMapper eventPatchMapper;
     private final StatsService statsService;
-
-    private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public EventFullDto create(Long userId, NewEventDto newEventDto) {
@@ -237,55 +234,17 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public Collection<EventFullDto> findAllByAdmin(List<Long> users, List<String> states,
-                                                   List<Long> categories, String rangeStart,
-                                                   String rangeEnd, Integer from, Integer size) {
-        LocalDateTime start = rangeStart == null ? null
-                : LocalDateTime.parse(rangeStart, FMT);
-        LocalDateTime end = rangeEnd == null ? null
-                : LocalDateTime.parse(rangeEnd, FMT);
+    public Collection<EventFullDto> findAllByAdmin(AdminEventFilter f) {
+        LocalDateTime start = f.getRangeStart();
+        LocalDateTime end = f.getRangeEnd();
 
-        if (start != null && end != null && start.isAfter(end)) {
-            throw new ValidationException("rangeStart должен быть раньше rangeEnd");
-        }
+        validateRangeAdmin(start, end);
 
-        List<EventState> stateEnums;
-        if (states != null && !states.isEmpty()) {
-            stateEnums = states.stream()
-                    .map(EventState::valueOf)
-                    .toList();
-        } else {
-            stateEnums = null;
-        }
+        Specification<Event> spec = buildSpecForAdmin(f, start, end);
 
-        Specification<Event> spec = Specification.where(null);
+        Pageable pageable = buildPageable(f.getFrom(), f.getSize(), null);
 
-        if (users != null && !users.isEmpty()) {
-            spec = spec.and((r, q, cb) -> r.get("initiator").get("id").in(users));
-        }
-
-        if (stateEnums != null && !stateEnums.isEmpty()) {
-            spec = spec.and((r, q, cb) -> r.get("state").in(stateEnums));
-        }
-
-        if (categories != null && !categories.isEmpty()) {
-            spec = spec.and((r, q, cb) -> r.get("category").get("id").in(categories));
-        }
-
-        if (start != null) {
-            spec = spec.and((r, q, cb) -> cb.greaterThanOrEqualTo(r.get("eventDate"), start));
-        }
-
-        if (end != null) {
-            spec = spec.and((r, q, cb) -> cb.lessThanOrEqualTo(r.get("eventDate"), end));
-        }
-
-        PageRequest pageRequest = Pagination.makePageRequest(from, size);
-        Page<Event> eventsPage;
-        Pageable pageable = Objects.requireNonNullElseGet(pageRequest,
-                () -> PageRequest.of(0, Integer.MAX_VALUE));
-        eventsPage = eventRepository.findAll(spec, pageable);
-        List<Event> events = eventsPage.getContent();
+        List<Event> events = eventRepository.findAll(spec, pageable).getContent();
 
         Map<String, Long> views =
                 events.isEmpty()
@@ -320,62 +279,26 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public Collection<EventShortDto> findAllByPublicUser(String text, List<Long> categories, Boolean paid,
-                                                         String rangeStart, String rangeEnd, Boolean onlyAvailable,
-                                                         EventSort sort, Integer from, Integer size, String ip,
+    public Collection<EventShortDto> findAllByPublicUser(PublicEventFilter f, String ip,
                                                          String uri) {
-        LocalDateTime start = rangeStart == null
-                ? LocalDateTime.now()
-                : LocalDateTime.parse(rangeStart, FMT);
-        LocalDateTime end = rangeEnd == null
-                ? null
-                : LocalDateTime.parse(rangeEnd, FMT);
+        LocalDateTime start = Optional.ofNullable(f.getRangeStart())
+                .orElse(LocalDateTime.now());
+        LocalDateTime end = f.getRangeEnd();
 
-        if (end != null && start.isAfter(end)) {
-            throw new ValidationException("rangeStart должен быть раньше rangeEnd");
-        }
+        validateRangePublic(start, end);
 
-        Specification<Event> spec = Specification
-                .<Event>where((r, q, cb) -> cb.equal(r.get("state"), EventState.PUBLISHED))
-
-                .and((r, q, cb) -> end == null
-                        ? cb.greaterThanOrEqualTo(r.get("eventDate"), start)
-                        : cb.between(r.get("eventDate"), start, end));
-
-        if (text != null && !text.isBlank()) {
-            String pattern = "%" + text.toLowerCase() + "%";
-            spec = spec.and((r, q, cb) -> cb.or(
-                    cb.like(cb.lower(r.get("annotation")), pattern),
-                    cb.like(cb.lower(r.get("description")), pattern)));
-        }
-
-        if (categories != null && !categories.isEmpty()) {
-            spec = spec.and((r, q, cb) -> r.get("category").get("id").in(categories));
-        }
-
-        if (paid != null) {
-            spec = spec.and((r, q, cb) -> cb.equal(r.get("paid"), paid));
-        }
-
-        if (Boolean.TRUE.equals(onlyAvailable)) {
-            spec = spec.and((r, q, cb) -> cb.or(
-                    cb.equal(r.get("participantLimit"), 0),
-                    cb.lessThan(r.get("confirmedRequests"), r.get("participantLimit"))));
-        }
+        Specification<Event> spec = buildSpecForPublic(f, start, end);
 
         Sort sortEvents;
-        if (sort == EventSort.EVENT_DATE) {
+        if (f.getSort() == EventSort.EVENT_DATE) {
             sortEvents = Sort.by("eventDate").ascending();
         } else {
             sortEvents = Sort.unsorted();
         }
 
-        PageRequest pageRequest = Pagination.makePageRequest(from, size);
-        Page<Event> eventsPage;
-        Pageable pageable = Objects.requireNonNullElseGet(pageRequest,
-                () -> PageRequest.of(0, Integer.MAX_VALUE, sortEvents));
-        eventsPage = eventRepository.findAll(spec, pageable);
-        List<Event> events = eventsPage.getContent();
+        Pageable pageable = buildPageable(f.getFrom(), f.getSize(), sortEvents);
+
+        List<Event> events = eventRepository.findAll(spec, pageable).getContent();
 
         Map<String, Long> views =
                 events.isEmpty()
@@ -387,7 +310,7 @@ public class EventServiceImp implements EventService {
                         views.getOrDefault("/events/" + e.getId(), 0L)))
                 .toList();
 
-        if (sort == EventSort.VIEWS) {
+        if (f.getSort() == EventSort.VIEWS) {
             shortEvents = shortEvents.stream()
                     .sorted(Comparator.comparing(EventShortDto::getViews).reversed())
                     .toList();
@@ -416,5 +339,94 @@ public class EventServiceImp implements EventService {
             throw new EventConflictException("Опубликованое событие не может быть отклонено");
         }
         event.setState(EventState.CANCELED);
+    }
+
+    private void validateRangePublic(LocalDateTime start, LocalDateTime end) {
+        if (end != null && start.isAfter(end)) {
+            throw new ValidationException("rangeStart должен быть раньше rangeEnd");
+        }
+    }
+
+    private void validateRangeAdmin(LocalDateTime start, LocalDateTime end) {
+        if (start != null && end != null && start.isAfter(end)) {
+            throw new ValidationException("rangeStart должен быть раньше rangeEnd");
+        }
+    }
+
+    private Specification<Event> buildSpecForPublic(PublicEventFilter f, LocalDateTime start, LocalDateTime end) {
+        Specification<Event> spec = Specification
+                .<Event>where((r, q, cb) -> cb.equal(r.get("state"), EventState.PUBLISHED))
+
+                .and((r, q, cb) -> end == null
+                        ? cb.greaterThanOrEqualTo(r.get("eventDate"), start)
+                        : cb.between(r.get("eventDate"), start, end));
+
+        if (f.getText() != null && !f.getText().isBlank()) {
+            String pattern = "%" + f.getText().toLowerCase() + "%";
+            spec = spec.and((r, q, cb) -> cb.or(
+                    cb.like(cb.lower(r.get("annotation")), pattern),
+                    cb.like(cb.lower(r.get("description")), pattern)));
+        }
+
+        if (f.getCategories() != null && !f.getCategories().isEmpty()) {
+            spec = spec.and((r, q, cb) -> r.get("category").get("id").in(f.getCategories()));
+        }
+
+        if (f.getPaid() != null) {
+            spec = spec.and((r, q, cb) -> cb.equal(r.get("paid"), f.getPaid()));
+        }
+
+        if (Boolean.TRUE.equals(f.getOnlyAvailable())) {
+            spec = spec.and((r, q, cb) -> cb.or(
+                    cb.equal(r.get("participantLimit"), 0),
+                    cb.lessThan(r.get("confirmedRequests"), r.get("participantLimit"))));
+        }
+
+        return spec;
+    }
+
+    private Specification<Event> buildSpecForAdmin(AdminEventFilter f, LocalDateTime start, LocalDateTime end) {
+        List<EventState> stateEnums = Optional.ofNullable(f.getStates())
+                .filter(list -> !list.isEmpty())
+                .map(list -> list.stream()
+                        .map(EventState::valueOf)
+                        .toList())
+                .orElse(null);
+
+        Specification<Event> spec = Specification.where(null);
+
+        if (f.getUsers() != null && !f.getUsers().isEmpty()) {
+            spec = spec.and((r, q, cb) -> r.get("initiator").get("id").in(f.getUsers()));
+        }
+
+        if (stateEnums != null && !stateEnums.isEmpty()) {
+            spec = spec.and((r, q, cb) -> r.get("state").in(stateEnums));
+        }
+
+        if (f.getCategories() != null && !f.getCategories().isEmpty()) {
+            spec = spec.and((r, q, cb) -> r.get("category").get("id").in(f.getCategories()));
+        }
+
+        if (start != null) {
+            spec = spec.and((r, q, cb) -> cb.greaterThanOrEqualTo(r.get("eventDate"), start));
+        }
+
+        if (end != null) {
+            spec = spec.and((r, q, cb) -> cb.lessThanOrEqualTo(r.get("eventDate"), end));
+        }
+
+        return spec;
+    }
+
+    private Pageable buildPageable(Integer from, Integer size, Sort sort) {
+        PageRequest pr = Pagination.makePageRequest(from, size);
+        if (pr != null) {
+            return (sort == null)
+                    ? pr
+                    : PageRequest.of(pr.getPageNumber(), pr.getPageSize(), sort);
+        }
+
+        Sort s = (sort == null) ? Sort.unsorted() : sort;
+        return PageRequest.of(0, Integer.MAX_VALUE, s);
     }
 }

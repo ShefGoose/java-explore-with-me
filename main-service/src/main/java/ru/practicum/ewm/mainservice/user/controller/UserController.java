@@ -21,7 +21,6 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    @Validated
     public Collection<UserDto> findAll(@RequestParam(name = "ids", required = false) List<Long> ids,
                                        @PositiveOrZero @RequestParam(name = "from", required = false,
                                                defaultValue = "0") Integer from,

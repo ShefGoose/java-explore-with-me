@@ -1,6 +1,7 @@
 package ru.practicum.ewm.mainservice.stats;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.mainservice.advice.enums.EventState;
 import ru.practicum.ewm.mainservice.event.model.Event;
@@ -16,16 +17,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class StatsService {
     private final StatsClient statsClient;
-    private static final String APP_NAME = "ewm-main-service";
+    @Value("${stats.app-name}")
+    private String appName;
 
     public void addHit(String uri, String ip) {
         HitDto newHitDto = new HitDto();
         newHitDto.setIp(ip);
         newHitDto.setUri(uri);
-        newHitDto.setApp(APP_NAME);
+        newHitDto.setApp(appName);
         statsClient.hit(newHitDto);
     }
 

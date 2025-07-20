@@ -1,11 +1,9 @@
 package ru.practicum.ewm.mainservice.event.service;
 
-import ru.practicum.ewm.mainservice.advice.enums.EventSort;
 import ru.practicum.ewm.mainservice.event.dto.*;
 import ru.practicum.ewm.mainservice.request.dto.ParticipationRequestDto;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface EventService {
     EventFullDto create(Long userId, NewEventDto newEventDto);
@@ -23,13 +21,9 @@ public interface EventService {
 
     EventFullDto updateAdmin(Long eventId, UpdateEventAdminRequest updateEventAdminRequest);
 
-    Collection<EventFullDto> findAllByAdmin(List<Long> users, List<String> states,
-                                            List<Long> categories, String rangeStart,
-                                            String rangeEnd, Integer from, Integer size);
+    Collection<EventFullDto> findAllByAdmin(AdminEventFilter filter);
 
     EventFullDto findByPublicUser(Long eventId, String ip, String uri);
 
-    Collection<EventShortDto> findAllByPublicUser(String text, List<Long> categories, Boolean paid,
-                                                  String rangeStart, String rangeEnd, Boolean onlyAvailable,
-                                                  EventSort sort, Integer from, Integer size, String ip, String uri);
+    Collection<EventShortDto> findAllByPublicUser(PublicEventFilter filter, String ip, String uri);
 }

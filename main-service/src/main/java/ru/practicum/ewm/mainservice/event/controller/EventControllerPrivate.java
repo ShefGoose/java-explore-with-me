@@ -33,7 +33,6 @@ public class EventControllerPrivate {
     }
 
     @GetMapping
-    @Validated
     public Collection<EventShortDto> findAll(@PathVariable Long userId,
                                              @PositiveOrZero @RequestParam(name = "from", required = false,
                                                      defaultValue = "0") Integer from,

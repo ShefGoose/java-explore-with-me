@@ -1,6 +1,7 @@
 package ru.practicum.ewm.mainservice.category.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,12 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public CategoryDto create(CategoryDto categoryDto) {
-        if (categoryRepository.existsByNameIgnoreCase(categoryDto.getName())) {
+        try {
+            Category category = categoryRepository.saveAndFlush(CategoryMapper.toCategory(categoryDto));
+            return CategoryMapper.toCategoryDto(category);
+        } catch (DataIntegrityViolationException e) {
             throw new DuplicationNameCatException("Категория с таким именем уже существует");
         }
-        return CategoryMapper.toCategoryDto(categoryRepository.save(CategoryMapper.toCategory(categoryDto)));
     }
 
     @Override
@@ -37,13 +40,16 @@ public class CategoryServiceImp implements CategoryService {
                 .orElseThrow(() -> new EntityNotFoundException("Category with id=" + catId + " was not found"));
 
         if (!categoryUpdate.getName().equalsIgnoreCase(categoryDto.getName())) {
-            if (categoryRepository.existsByNameIgnoreCase(categoryDto.getName())) {
+            categoryUpdate.setName(categoryDto.getName());
+
+            try {
+                categoryUpdate = categoryRepository.saveAndFlush(categoryUpdate);
+            } catch (DataIntegrityViolationException e) {
                 throw new DuplicationNameCatException("Категория с таким именем уже существует");
             }
-            categoryUpdate.setName(categoryDto.getName());
         }
 
-        return CategoryMapper.toCategoryDto(categoryRepository.save(categoryUpdate));
+        return CategoryMapper.toCategoryDto(categoryUpdate);
     }
 
     @Override
