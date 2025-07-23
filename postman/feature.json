@@ -1,11 +1,10 @@
 {
 	"info": {
-		"_postman_id": "5584256f-4a19-4351-8e54-646c14932667",
+		"_postman_id": "46f2777f-5d08-46a3-b3c0-5a5a8eeb4870",
 		"name": "test explore with me feature_subscriptions",
-		"description": "Функциональные тесты с созданием пользователей, событий, просмотров",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "46907501",
-		"_collection_link": "https://saveliy-6578082.postman.co/workspace/Saveliy's-Workspace~830ca46d-742c-4183-8397-faece5fa5bf7/collection/46907501-5584256f-4a19-4351-8e54-646c14932667?action=share&source=collection_link&creator=46907501"
+		"_collection_link": "https://saveliy-6578082.postman.co/workspace/Saveliy's-Workspace~830ca46d-742c-4183-8397-faece5fa5bf7/collection/46907501-46f2777f-5d08-46a3-b3c0-5a5a8eeb4870?action=share&source=collection_link&creator=46907501"
 	},
 	"item": [
 		{
@@ -20,10 +19,30 @@
 								"exec": [
 									"pm.test(\"Статус 201\", function () {",
 									"    pm.response.to.have.status(201);",
-									"});"
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"user1Id\", json.id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set('user1Id', json.id);"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -58,11 +77,25 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Статус 201\", function () {",
 									"    pm.response.to.have.status(201);",
-									"});"
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"user2Id\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set('user69162Id', json.id);"
 								]
 							}
 						}
@@ -98,12 +131,20 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Статус 201\", function () {",
 									"    pm.response.to.have.status(201);",
 									"});"
-								]
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -120,15 +161,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/1/subscriptions/2",
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user2Id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"1",
+								"{{user1Id}}",
 								"subscriptions",
-								"2"
+								"{{user2Id}}"
 							]
 						}
 					},
@@ -145,11 +186,25 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Статус 201\", function () {",
 									"    pm.response.to.have.status(201);",
-									"});"
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"user3Id\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set('user52213Id', json.id);"
 								]
 							}
 						}
@@ -185,11 +240,25 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Статус 201\", function () {",
 									"    pm.response.to.have.status(201);",
-									"});"
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"user4Id\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set('user75874Id', json.id);"
 								]
 							}
 						}
@@ -225,12 +294,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Статус 201\", function () {",
 									"    pm.response.to.have.status(201);",
 									"});"
-								]
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -247,15 +317,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/3/subscriptions/4",
+							"raw": "{{baseUrl}}/users/{{user3Id}}/subscriptions/{{user4Id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"3",
+								"{{user3Id}}",
 								"subscriptions",
-								"4"
+								"{{user4Id}}"
 							]
 						}
 					},
@@ -267,12 +337,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Статус 204\", function () {",
 									"    pm.response.to.have.status(204);",
 									"});"
-								]
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -289,15 +360,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/3/subscriptions/4",
+							"raw": "{{baseUrl}}/users/{{user3Id}}/subscriptions/{{user4Id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"3",
+								"{{user3Id}}",
 								"subscriptions",
-								"4"
+								"{{user4Id}}"
 							]
 						}
 					},
@@ -317,10 +388,23 @@
 								"exec": [
 									"pm.test(\"Статус 201\", function () {",
 									"    pm.response.to.have.status(201);",
-									"});"
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"user5Id\", json.id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set('user5555Id', json.id);"
+								]
 							}
 						}
 					],
@@ -358,10 +442,23 @@
 								"exec": [
 									"pm.test(\"Статус 201\", function () {",
 									"    pm.response.to.have.status(201);",
-									"});"
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"user6Id\", json.id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set('user6666Id', json.id);"
+								]
 							}
 						}
 					],
@@ -396,12 +493,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Статус 201\", function () {",
 									"    pm.response.to.have.status(201);",
 									"});"
-								]
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -418,15 +516,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/5/subscriptions/6",
+							"raw": "{{baseUrl}}/users/{{user5Id}}/subscriptions/{{user6Id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"5",
+								"{{user5Id}}",
 								"subscriptions",
-								"6"
+								"{{user6Id}}"
 							]
 						}
 					},
@@ -438,12 +536,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Статус 204\", function () {",
 									"    pm.response.to.have.status(204);",
 									"});"
-								]
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -460,15 +559,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/6/subscriptions/5/cancel",
+							"raw": "{{baseUrl}}/users/{{user6Id}}/subscriptions/{{user5Id}}/cancel",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"6",
+								"{{user6Id}}",
 								"subscriptions",
-								"5",
+								"{{user5Id}}",
 								"cancel"
 							]
 						}
@@ -486,12 +585,16 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Статус 201\", function () {",
 									"    pm.response.to.have.status(201);",
-									"});"
-								]
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"catId\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -505,7 +608,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"name\": \"\\u041a\\u0430\\u0442\\u0435\\u0433\\u043e\\u0440\\u0438\\u044f \\u0434\\u043b\\u044f \\u0442\\u0435\\u0441\\u0442\\u0430\"}"
+							"raw": "{\"name\": \"testCat\"}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/admin/categories",
@@ -529,7 +632,10 @@
 								"exec": [
 									"pm.test(\"Статус 201\", function () {",
 									"    pm.response.to.have.status(201);",
-									"});"
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"event1Id\", json.id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -546,16 +652,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"annotation\": \"sjdsjdjsdjsjdsjdjsdjsdjsjdsjdj9sjdsjdjsjdsjdjsdjsjd\", \"category\": 1, \"description\": \"0s9dsdsdsjdsjdjsdjsjdsjdjsjdsjdjsjdsjdjsjdjsdjsjdsdjsjdsjd\", \"eventDate\": \"2026-12-31 23:59:59\", \"location\": {\"lat\": 55.7558, \"lon\": 37.6173}, \"paid\": false, \"participantLimit\": 100, \"requestModeration\": false, \"title\": \"tutututututututu\"}"
+							"raw": "{\"annotation\": \"sjdsjdjsdjsjdsjdjsdjsdjsjdsjdj9sjdsjdjsjdsjdjsdjsjd\", \"category\": {{catId}}, \"description\": \"0s9dsdsdsjdsjdjsdjsjdsjdjsjdsjdjsjdsjdjsjdjsdjsjdsdjsjdsjd\", \"eventDate\": \"2026-12-31 23:59:59\", \"location\": {\"lat\": 55.7558, \"lon\": 37.6173}, \"paid\": false, \"participantLimit\": 100, \"requestModeration\": false, \"title\": \"tutututututututu\"}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/2/events",
+							"raw": "{{baseUrl}}/users/{{user2Id}}/events",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"2",
+								"{{user2Id}}",
 								"events"
 							]
 						}
@@ -591,14 +697,14 @@
 							"raw": "{\"stateAction\": \"PUBLISH_EVENT\"}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/admin/events/1",
+							"raw": "{{baseUrl}}/admin/events/{{event1Id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"admin",
 								"events",
-								"1"
+								"{{event1Id}}"
 							]
 						}
 					},
@@ -610,12 +716,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Статус 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});"
-								]
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -633,13 +740,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/events/1",
+							"raw": "{{baseUrl}}/events/{{event1Id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"events",
-								"1"
+								"{{event1Id}}"
 							]
 						}
 					},
@@ -684,15 +791,15 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/1/subscriptions/2",
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user2Id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"1",
+								"{{user1Id}}",
 								"subscriptions",
-								"2"
+								"{{user2Id}}"
 							]
 						}
 					},
@@ -712,7 +819,10 @@
 								"exec": [
 									"pm.test(\"Статус 201\", function () {",
 									"    pm.response.to.have.status(201);",
-									"});"
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"event2Id\", json.id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -732,13 +842,13 @@
 							"raw": "{\"annotation\": \"877fsfasfasfasfasfasfasfasfasfasfasfjdofgkodfgkdfkgdkfgkdfgkdfgkdfogkdfgdf\", \"category\": 1, \"description\": \"ffafasfdasfasfasfasfasfasfasfasfasssrsrsfsfsfsfsffasfasfa\", \"eventDate\": \"2027-12-31 23:59:59\", \"location\": {\"lat\": 55.7558, \"lon\": 37.6173}, \"paid\": false, \"participantLimit\": 100, \"requestModeration\": false, \"title\": \"kikikikik\"}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/3/events",
+							"raw": "{{baseUrl}}/users/{{user3Id}}/events",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"3",
+								"{{user3Id}}",
 								"events"
 							]
 						}
@@ -774,14 +884,14 @@
 							"raw": "{\"stateAction\": \"PUBLISH_EVENT\"}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/admin/events/2",
+							"raw": "{{baseUrl}}/admin/events/{{event2Id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"admin",
 								"events",
-								"2"
+								"{{event2Id}}"
 							]
 						}
 					},
@@ -816,15 +926,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/1/subscriptions/3",
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user3Id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"1",
+								"{{user1Id}}",
 								"subscriptions",
-								"3"
+								"{{user3Id}}"
 							]
 						}
 					},
@@ -869,13 +979,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/1/subscriptions",
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"1",
+								"{{user1Id}}",
 								"subscriptions"
 							]
 						}
@@ -912,15 +1022,15 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/1/subscriptions/1",
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user1Id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"1",
+								"{{user1Id}}",
 								"subscriptions",
-								"1"
+								"{{user1Id}}"
 							]
 						}
 					},
@@ -956,13 +1066,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/1/subscriptions/9999",
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/9999",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"1",
+								"{{user1Id}}",
 								"subscriptions",
 								"9999"
 							]
@@ -1000,15 +1110,15 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/1/subscriptions/1",
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user1Id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"1",
+								"{{user1Id}}",
 								"subscriptions",
-								"1"
+								"{{user1Id}}"
 							]
 						}
 					},
@@ -1044,15 +1154,15 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/1/subscriptions/1/cancel",
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user1Id}}/cancel",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"1",
+								"{{user1Id}}",
 								"subscriptions",
-								"1",
+								"{{user1Id}}",
 								"cancel"
 							]
 						}
@@ -1089,15 +1199,15 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/1/subscriptions/1",
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user1Id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"1",
+								"{{user1Id}}",
 								"subscriptions",
-								"1"
+								"{{user1Id}}"
 							]
 						}
 					},
@@ -1133,15 +1243,15 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/1/subscriptions/2",
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user2Id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"1",
+								"{{user1Id}}",
 								"subscriptions",
-								"2"
+								"{{user2Id}}"
 							]
 						}
 					},
@@ -1200,13 +1310,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/users/1/subscriptions?sort=EVENT_DATE",
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions?sort=EVENT_DATE",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"1",
+								"{{user1Id}}",
 								"subscriptions"
 							],
 							"query": [
@@ -1222,10 +1332,91 @@
 			]
 		}
 	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
 	"variable": [
 		{
 			"key": "baseUrl",
 			"value": "http://localhost:8080"
+		},
+		{
+			"key": "user1Id",
+			"value": 0
+		},
+		{
+			"key": "user2Id",
+			"value": 0
+		},
+		{
+			"key": "user3Id",
+			"value": 0
+		},
+		{
+			"key": "user4Id",
+			"value": 0
+		},
+		{
+			"key": "user5Id",
+			"value": 0
+		},
+		{
+			"key": "user6Id",
+			"value": 0
+		},
+		{
+			"key": "catId",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "event1Id",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "event2Id",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "user6666Id",
+			"value": ""
+		},
+		{
+			"key": "user69162Id",
+			"value": ""
+		},
+		{
+			"key": "user52213Id",
+			"value": ""
+		},
+		{
+			"key": "user75874Id",
+			"value": ""
+		},
+		{
+			"key": "user5555Id",
+			"value": ""
 		}
 	]
 }
