@@ -73,6 +73,13 @@ public class MainServiceErrorHandler extends ResponseEntityExceptionHandler {
                 e.getLocalizedMessage());
     }
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AccessDeniedException.class)
+    public ApiError handleAccessDeniedException(final AccessDeniedException e) {
+        return new ApiError(HttpStatus.FORBIDDEN, "Access Denied",
+                e.getLocalizedMessage());
+    }
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EntityNotFoundException.class)
     public ApiError handleEntityNotFoundException(final EntityNotFoundException e) {

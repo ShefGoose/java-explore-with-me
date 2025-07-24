@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.ewm.mainservice.advice.enums.EventState;
+import ru.practicum.ewm.mainservice.advice.exception.AccessDeniedException;
 import ru.practicum.ewm.mainservice.advice.exception.EntityNotFoundException;
 import ru.practicum.ewm.mainservice.advice.exception.SubscribeConflictException;
 import ru.practicum.ewm.mainservice.category.model.Category;
@@ -115,8 +116,6 @@ public class SubscriptionServiceTest {
     void removeSubscriberShouldDeleteWhenSubscribed() {
         Long userId = 2L, subscriberId = 1L;
 
-        when(subscriptionRepository.existsById(new SubscriptionId(subscriberId, userId))).thenReturn(true);
-
         subscriptionService.removeSubscriber(userId, subscriberId);
 
         verify(subscriptionRepository).deleteById(new SubscriptionId(subscriberId, userId));
@@ -130,18 +129,6 @@ public class SubscriptionServiceTest {
                 () -> subscriptionService.removeSubscriber(userId, userId));
 
         assertEquals("Нельзя удалить из подписчиков самого себя", ex.getMessage());
-    }
-
-    @Test
-    void removeSubscriberShouldThrowWhenNotSubscribed() {
-        Long userId = 2L, subscriberId = 1L;
-
-        when(subscriptionRepository.existsById(new SubscriptionId(subscriberId, userId))).thenReturn(false);
-
-        SubscribeConflictException ex = assertThrows(SubscribeConflictException.class,
-                () -> subscriptionService.removeSubscriber(userId, subscriberId));
-
-        assertTrue(ex.getMessage().contains("не подписан на вас"));
     }
 
     @Test
@@ -189,7 +176,7 @@ public class SubscriptionServiceTest {
 
     @Test
     void findAllShouldReturnEmptyWhenNoTargets() {
-        when(subscriptionRepository.findAllTargetIds(1L)).thenReturn(List.of());
+        when(subscriptionRepository.findAllTargetIdBySubscriberId(1L)).thenReturn(List.of());
 
         Collection<EventShortDto> result = subscriptionService.findAll(1L, null, 0, 10);
 
@@ -202,7 +189,7 @@ public class SubscriptionServiceTest {
 
         when(subscriptionRepository.existsById(new SubscriptionId(userId, targetId))).thenReturn(false);
 
-        SubscribeConflictException ex = assertThrows(SubscribeConflictException.class,
+        AccessDeniedException ex = assertThrows(AccessDeniedException.class,
                 () -> subscriptionService.findEventsFromTarget(userId, targetId));
 
         assertTrue(ex.getMessage().contains("не подписаны"));

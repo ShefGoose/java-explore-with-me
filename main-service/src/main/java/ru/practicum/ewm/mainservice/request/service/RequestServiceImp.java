@@ -1,6 +1,6 @@
 package ru.practicum.ewm.mainservice.request.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.mainservice.advice.enums.EventState;
 import ru.practicum.ewm.mainservice.advice.enums.RequestStatus;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RequestServiceImp implements RequestService {
     private final RequestRepository requestRepository;
     private final EventRepository eventRepository;

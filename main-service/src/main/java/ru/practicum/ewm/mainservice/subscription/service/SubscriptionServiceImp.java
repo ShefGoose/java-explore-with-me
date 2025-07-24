@@ -1,11 +1,12 @@
 package ru.practicum.ewm.mainservice.subscription.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.mainservice.advice.Pagination;
 import ru.practicum.ewm.mainservice.advice.enums.EventSort;
+import ru.practicum.ewm.mainservice.advice.exception.AccessDeniedException;
 import ru.practicum.ewm.mainservice.advice.exception.EntityNotFoundException;
 import ru.practicum.ewm.mainservice.advice.exception.SubscribeConflictException;
 import ru.practicum.ewm.mainservice.event.dto.EventShortDto;
@@ -21,7 +22,7 @@ import ru.practicum.ewm.mainservice.user.repository.UserRepository;
 import java.util.*;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SubscriptionServiceImp implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final UserRepository userRepository;
@@ -63,10 +64,6 @@ public class SubscriptionServiceImp implements SubscriptionService {
             throw new SubscribeConflictException("Нельзя удалить из подписчиков самого себя");
         }
 
-        if (!subscriptionRepository.existsById(new SubscriptionId(subscriberId, userId))) {
-            throw new SubscribeConflictException("Пользователь с id= " + subscriberId + " не подписан на вас");
-        }
-
         subscriptionRepository.deleteById(new SubscriptionId(subscriberId, userId));
     }
 
@@ -77,7 +74,7 @@ public class SubscriptionServiceImp implements SubscriptionService {
         }
 
         if (!subscriptionRepository.existsById(new SubscriptionId(userId, targetId))) {
-            throw new SubscribeConflictException("Вы не подписаны на пользователя с id= " + targetId);
+            throw new AccessDeniedException("Вы не подписаны на пользователя с id= " + targetId);
         }
 
         Collection<Event> events = eventRepository.findAllPublishedByInitiatorId(targetId);
@@ -96,7 +93,7 @@ public class SubscriptionServiceImp implements SubscriptionService {
     @Override
     public Collection<EventShortDto> findAll(Long userId, EventSort sort, Integer from, Integer size) {
 
-        Collection<Long> targetIds = subscriptionRepository.findAllTargetIds(userId);
+        Collection<Long> targetIds = subscriptionRepository.findAllTargetIdBySubscriberId(userId);
 
         if (targetIds.isEmpty()) {
             return List.of();
