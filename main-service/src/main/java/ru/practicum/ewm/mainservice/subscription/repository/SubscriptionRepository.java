@@ -9,5 +9,5 @@ import java.util.Collection;
 
 @Repository
 public interface SubscriptionRepository extends JpaRepository<Subscription, SubscriptionId> {
-    Collection<Long> findAllTargetIdBySubscriberId(Long userId);
+    Collection<Subscription> findAllBySubscriberId(Long userId);
 }

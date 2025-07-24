@@ -93,7 +93,9 @@ public class SubscriptionServiceImp implements SubscriptionService {
     @Override
     public Collection<EventShortDto> findAll(Long userId, EventSort sort, Integer from, Integer size) {
 
-        Collection<Long> targetIds = subscriptionRepository.findAllTargetIdBySubscriberId(userId);
+        Collection<Long> targetIds = subscriptionRepository.findAllBySubscriberId(userId).stream()
+                .map(Subscription::getTargetId)
+                .toList();
 
         if (targetIds.isEmpty()) {
             return List.of();

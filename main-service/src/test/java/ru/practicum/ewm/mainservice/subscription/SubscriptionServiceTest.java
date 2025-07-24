@@ -176,7 +176,7 @@ public class SubscriptionServiceTest {
 
     @Test
     void findAllShouldReturnEmptyWhenNoTargets() {
-        when(subscriptionRepository.findAllTargetIdBySubscriberId(1L)).thenReturn(List.of());
+        when(subscriptionRepository.findAllBySubscriberId(1L)).thenReturn(List.of());
 
         Collection<EventShortDto> result = subscriptionService.findAll(1L, null, 0, 10);
 
