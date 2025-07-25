@@ -2,7 +2,7 @@ package ru.practicum.ewm.mainservice.event.service;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.ValidationException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +37,7 @@ import java.util.*;
 
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EventServiceImp implements EventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;

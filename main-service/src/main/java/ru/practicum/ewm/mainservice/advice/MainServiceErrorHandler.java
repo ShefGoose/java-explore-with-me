@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import ru.practicum.ewm.mainservice.advice.exception.DuplicateEmailException;
-import ru.practicum.ewm.mainservice.advice.exception.DuplicationNameCatException;
-import ru.practicum.ewm.mainservice.advice.exception.EntityNotFoundException;
-import ru.practicum.ewm.mainservice.advice.exception.EventConflictException;
+import ru.practicum.ewm.mainservice.advice.exception.*;
 import ru.practicum.ewm.mainservice.advice.response.ApiError;
 import ru.practicum.ewm.mainservice.advice.response.ValidationErrorResponse;
 import ru.practicum.ewm.mainservice.advice.response.Violation;
@@ -27,7 +24,8 @@ import java.util.stream.Collectors;
         "ru.practicum.ewm.mainservice.category.controller",
         "ru.practicum.ewm.mainservice.event.controller",
         "ru.practicum.ewm.mainservice.request.controller",
-        "ru.practicum.ewm.mainservice.compilation.controller"})
+        "ru.practicum.ewm.mainservice.compilation.controller",
+        "ru.practicum.ewm.mainservice.subscription.controller"})
 public class MainServiceErrorHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex,
@@ -65,6 +63,20 @@ public class MainServiceErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EventConflictException.class)
     public ApiError handleEventConflictException(final EventConflictException e) {
         return new ApiError(HttpStatus.CONFLICT, "For the requested operation the conditions are not met.",
+                e.getLocalizedMessage());
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(SubscribeConflictException.class)
+    public ApiError handleSubscribeConflictException(final SubscribeConflictException e) {
+        return new ApiError(HttpStatus.CONFLICT, "Conflict while trying to subscribe",
+                e.getLocalizedMessage());
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AccessDeniedException.class)
+    public ApiError handleAccessDeniedException(final AccessDeniedException e) {
+        return new ApiError(HttpStatus.FORBIDDEN, "Access Denied",
                 e.getLocalizedMessage());
     }
 

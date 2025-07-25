@@ -1,0 +1,1422 @@
+{
+	"info": {
+		"_postman_id": "46f2777f-5d08-46a3-b3c0-5a5a8eeb4870",
+		"name": "test explore with me feature_subscriptions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46907501",
+		"_collection_link": "https://saveliy-6578082.postman.co/workspace/Saveliy's-Workspace~830ca46d-742c-4183-8397-faece5fa5bf7/collection/46907501-46f2777f-5d08-46a3-b3c0-5a5a8eeb4870?action=share&source=collection_link&creator=46907501"
+	},
+	"item": [
+		{
+			"name": "01. Успешная подписка",
+			"item": [
+				{
+					"name": "Создать user 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"user1Id\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set('user1Id', json.id);"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\": \"user1@example.com\", \"name\": \"User 1\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создать user 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"user2Id\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set('user69162Id', json.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\": \"user69162@example.com\", \"name\": \"User 69162\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Подписка: user 1 → user 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user2Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user1Id}}",
+								"subscriptions",
+								"{{user2Id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02. Успешная отписка",
+			"item": [
+				{
+					"name": "Создать user 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"user3Id\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set('user52213Id', json.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\": \"user52213@example.com\", \"name\": \"User 52213\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создать user 4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"user4Id\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set('user75874Id', json.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\": \"user75874@example.com\", \"name\": \"User 75874\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Подписка: user 3 → user 4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user3Id}}/subscriptions/{{user4Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user3Id}}",
+								"subscriptions",
+								"{{user4Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Отписка: user 3 → user 4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user3Id}}/subscriptions/{{user4Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user3Id}}",
+								"subscriptions",
+								"{{user4Id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "03. Успешное удаление подписчика",
+			"item": [
+				{
+					"name": "Создать подписчика",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"user5Id\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set('user5555Id', json.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\": \"user5555@example.com\", \"name\": \"User 5555\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создать автора",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"user6Id\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set('user6666Id', json.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\": \"user6666@example.com\", \"name\": \"User 6666\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Подписка: подписчик → автор",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user5Id}}/subscriptions/{{user6Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user5Id}}",
+								"subscriptions",
+								"{{user6Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление подписчика: автор удаляет подписчика",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user6Id}}/subscriptions/{{user5Id}}/cancel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user6Id}}",
+								"subscriptions",
+								"{{user5Id}}",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "04. Получение событий автора",
+			"item": [
+				{
+					"name": "Создать категорию",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"catId\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"testCat\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/categories",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создать событие",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"event1Id\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"annotation\": \"sjdsjdjsdjsjdsjdjsdjsdjsjdsjdj9sjdsjdjsjdsjdjsdjsjd\", \"category\": {{catId}}, \"description\": \"0s9dsdsdsjdsjdjsdjsjdsjdjsjdsjdjsjdsjdjsjdjsdjsjdsdjsjdsjd\", \"eventDate\": \"2026-12-31 23:59:59\", \"location\": {\"lat\": 55.7558, \"lon\": 37.6173}, \"paid\": false, \"participantLimit\": 100, \"requestModeration\": false, \"title\": \"tutututututututu\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user2Id}}/events",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user2Id}}",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Публикация события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"stateAction\": \"PUBLISH_EVENT\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/events/{{event1Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"events",
+								"{{event1Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Просмотр события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Forwarded-For",
+								"value": "192.168.1.1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/events/{{event1Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"events",
+								"{{event1Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получить события автора",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Ответ содержит JSON тело\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Список не пустой (если события есть)\", function () {",
+									"    const body = pm.response.json();",
+									"    pm.expect(body).to.be.an('array');",
+									"    if (body.length > 0) {",
+									"        pm.expect(body[0]).to.have.property('id');",
+									"        pm.expect(body[0]).to.have.property('views');",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user2Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user1Id}}",
+								"subscriptions",
+								"{{user2Id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "05. Получение событий от всех подписок",
+			"item": [
+				{
+					"name": "Создать событие",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"event2Id\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"annotation\": \"877fsfasfasfasfasfasfasfasfasfasfasfjdofgkodfgkdfkgdkfgkdfgkdfgkdfogkdfgdf\", \"category\": 1, \"description\": \"ffafasfdasfasfasfasfasfasfasfasfasssrsrsfsfsfsfsffasfasfa\", \"eventDate\": \"2027-12-31 23:59:59\", \"location\": {\"lat\": 55.7558, \"lon\": 37.6173}, \"paid\": false, \"participantLimit\": 100, \"requestModeration\": false, \"title\": \"kikikikik\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user3Id}}/events",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user3Id}}",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Публикация события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"stateAction\": \"PUBLISH_EVENT\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/events/{{event2Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"events",
+								"{{event2Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Подписка user 1 -> user 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user3Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user1Id}}",
+								"subscriptions",
+								"{{user3Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получить ленту подписок",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Ответ содержит JSON тело\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Список не пустой (если события есть)\", function () {",
+									"    const body = pm.response.json();",
+									"    pm.expect(body).to.be.an('array');",
+									"    if (body.length > 0) {",
+									"        pm.expect(body[0]).to.have.property('id');",
+									"        pm.expect(body[0]).to.have.property('views');",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user1Id}}",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "06. 409 Подписка на самого себя",
+			"item": [
+				{
+					"name": "Подписка user 1 -> user 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 409\", function () {",
+									"    pm.response.to.have.status(409);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user1Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user1Id}}",
+								"subscriptions",
+								"{{user1Id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "07. 404 Подписка на несуществующего пользователя",
+			"item": [
+				{
+					"name": "Подписка user 1 -> user 9999",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/9999",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user1Id}}",
+								"subscriptions",
+								"9999"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "08. 409 Отписка от самого себя",
+			"item": [
+				{
+					"name": "Отписка user 1 -> user 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 409\", function () {",
+									"    pm.response.to.have.status(409);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user1Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user1Id}}",
+								"subscriptions",
+								"{{user1Id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "09. 409 Удаление себя из подписчиков",
+			"item": [
+				{
+					"name": "Удаление подписчика: автор user 1 -> user 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 409\", function () {",
+									"    pm.response.to.have.status(409);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user1Id}}/cancel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user1Id}}",
+								"subscriptions",
+								"{{user1Id}}",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "10. 409 Запрос на события от самого себя",
+			"item": [
+				{
+					"name": "Просмотр своих событий user 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 409\", function () {",
+									"    pm.response.to.have.status(409);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user1Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user1Id}}",
+								"subscriptions",
+								"{{user1Id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "11. 409 Повторная подписка",
+			"item": [
+				{
+					"name": "Повторная подписка",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 409\", function () {",
+									"    pm.response.to.have.status(409);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions/{{user2Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user1Id}}",
+								"subscriptions",
+								"{{user2Id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "12. Получение событий с сортировкой по дате",
+			"item": [
+				{
+					"name": "Сортировка по дате",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Статус 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Ответ содержит JSON тело\", function () {",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"});",
+									"",
+									"pm.test(\"Список не пустой (если события есть)\", function () {",
+									"    const body = pm.response.json();",
+									"    pm.expect(body).to.be.an('array');",
+									"    if (body.length > 0) {",
+									"        pm.expect(body[0]).to.have.property('id');",
+									"        pm.expect(body[0]).to.have.property('views');",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Проверка сортировки по дате\", function () {",
+									"    const body = pm.response.json();",
+									"    if (body.length >= 2) {",
+									"        const firstDate = new Date(body[0].eventDate);",
+									"        const secondDate = new Date(body[1].eventDate);",
+									"        pm.expect(firstDate <= secondDate).to.be.true;",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/{{user1Id}}/subscriptions?sort=EVENT_DATE",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{user1Id}}",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "EVENT_DATE"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "user1Id",
+			"value": 0
+		},
+		{
+			"key": "user2Id",
+			"value": 0
+		},
+		{
+			"key": "user3Id",
+			"value": 0
+		},
+		{
+			"key": "user4Id",
+			"value": 0
+		},
+		{
+			"key": "user5Id",
+			"value": 0
+		},
+		{
+			"key": "user6Id",
+			"value": 0
+		},
+		{
+			"key": "catId",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "event1Id",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "event2Id",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "user6666Id",
+			"value": ""
+		},
+		{
+			"key": "user69162Id",
+			"value": ""
+		},
+		{
+			"key": "user52213Id",
+			"value": ""
+		},
+		{
+			"key": "user75874Id",
+			"value": ""
+		},
+		{
+			"key": "user5555Id",
+			"value": ""
+		}
+	]
+}

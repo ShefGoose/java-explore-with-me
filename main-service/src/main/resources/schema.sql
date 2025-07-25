@@ -67,3 +67,10 @@ compilation_id BIGINT NOT NULL REFERENCES compilations (id) ON DELETE CASCADE,
 event_id BIGINT NOT NULL REFERENCES events (id) ON DELETE CASCADE,
 PRIMARY KEY (compilation_id, event_id)
 );
+
+CREATE TABLE IF NOT EXISTS subscriptions (
+subscriber_id BIGINT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+target_id BIGINT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+subscribed_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (subscriber_id, target_id)
+);

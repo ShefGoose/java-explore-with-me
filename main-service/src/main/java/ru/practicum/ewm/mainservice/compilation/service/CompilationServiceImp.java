@@ -1,7 +1,7 @@
 package ru.practicum.ewm.mainservice.compilation.service;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CompilationServiceImp implements CompilationService {
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;

@@ -1,2 +1,2 @@
 # java-explore-with-me
-Template repository for ExploreWithMe project.
+[Pull-request feature](https://github.com/ShefGoose/java-explore-with-me/pull/3)
